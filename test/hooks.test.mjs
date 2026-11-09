@@ -97,3 +97,25 @@ test('the commit gate skips a tree on which gates.mjs fast was just green', () =
   assert.equal(hook(dir, 'commit-gate.mjs', { tool_name: 'Bash', tool_input: { command: 'git commit -m a' } }), null);
   assert.equal(sh(dir, 'cat', 'runs.log'), 'x', 'the gate ran once, in gates.mjs, not again in the commit gate');
 });
+
+test('the commit gate checks files staged by the same command', () => {
+  const dir = repo({ fast: [{ id: 'clippy', name: 'clippy', command: `${ECHO_FAIL_ON_BETA} {cargo-packages}`, paths: ['crates/'] }] });
+  writeFileSync(join(dir, 'crates/beta/src/lib.rs'), 'pub fn b() {}\n');
+  const denied = hook(dir, 'commit-gate.mjs', { tool_name: 'Bash', tool_input: { command: 'git add crates/beta && git commit -m "beta"' } });
+  assert.equal(denied?.hookSpecificOutput?.permissionDecision, 'deny', 'nothing staged yet, but the command stages beta first');
+});
+
+test('the commit gate refuses a commit whose gate ran past the time limit', () => {
+  const dir = repo({ fast: [{ id: 'slow', name: 'slow', command: 'node -e "setTimeout(() => {}, 5000)"', paths: ['crates/'] }] });
+  writeFileSync(join(dir, 'crates/alpha/src/lib.rs'), 'pub fn a() {}\n');
+  sh(dir, 'git', 'add', '-A');
+  const result = spawnSync(process.execPath, [join(dir, '.claude/hooks/commit-gate.mjs')], {
+    cwd: dir,
+    input: JSON.stringify({ cwd: dir, tool_name: 'Bash', tool_input: { command: 'git commit -m a' } }),
+    encoding: 'utf8',
+    env: { ...process.env, CLAUDE_PROJECT_DIR: dir, COMMIT_GATE_TIMEOUT_MS: '500' },
+  });
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.hookSpecificOutput.permissionDecision, 'deny');
+  assert.match(output.hookSpecificOutput.permissionDecisionReason, /did not finish in time[\s\S]*gates\.mjs fast/);
+});
