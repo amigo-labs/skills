@@ -96,11 +96,25 @@ test('a skill whose requirement is not configured is refused', () => {
 });
 
 test('every shared skill has front matter whose name matches its folder', () => {
-  for (const name of readdirSync(join(source, 'skills'))) {
+  for (const name of readdirSync(join(source, 'skills')).filter(entry => !entry.startsWith('_'))) {
     const text = readFileSync(join(source, 'skills', name, 'SKILL.md'), 'utf8');
     const frontmatter = text.match(/^---\n([\s\S]*?)\n---/);
     assert.ok(frontmatter, `${name}: front matter`);
     assert.match(frontmatter[1], new RegExp(`^name: ${name}$`, 'm'), `${name}: name`);
     assert.match(frontmatter[1], /^description: \S/m, `${name}: description`);
   }
+});
+
+test('a skill that needs a shared folder gets it installed and mirrored', () => {
+  const dir = consumer({ skills: ['evolve', 'compose', 'humanize'] });
+  assert.equal(sync(dir, '--from', source).status, 0);
+  for (const root of ['.agents/skills', '.claude/skills']) {
+    assert.ok(existsSync(join(dir, root, '_shared/tournament.md')), root);
+    assert.ok(existsSync(join(dir, root, 'evolve/LICENSE.txt')), root);
+  }
+  assert.equal(sync(dir, '--check').status, 0);
+  writeFileSync(join(dir, '.agents/skills.json'), JSON.stringify({ skills: ['readback'] }));
+  assert.equal(sync(dir, '--from', source).status, 0);
+  assert.ok(!existsSync(join(dir, '.agents/skills/_shared')), 'removed with the last skill that needed it');
+  assert.equal(sync(dir, '--check').status, 0);
 });

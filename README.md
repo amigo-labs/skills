@@ -10,6 +10,7 @@ The shared agent skills of amigo-labs, plus the small amount of tooling that put
 | `skills/qa` | Full gate run; its `scripts/` hold the agent-neutral gate runner (`gates.mjs`), `commit-mode.mjs` and `open-specs.mjs` |
 | `skills/ui-polish` | Screenshot-scored UI improvement loop |
 | `skills/develop` | The older verified-development workflow (specs/ADRs); kept for reference, not installed by default |
+| `skills/compose`, `humanize`, `evolve`, `gauge`, `muster`, `lint`, `readback`, `data-report`, `conduct`, `know-me` (+ `_shared`) | Adapted from [olcayseygan/crumora](https://github.com/olcayseygan/crumora) (MIT, `LICENSE.txt` in each folder, source commit in the front matter). Available, not installed by default — see "Skills from crumora" |
 | `agents-md/spec-workflow.md` | The workflow rules (triage, keeping knowledge, quality gates), inserted into each repository's `AGENTS.md` as a managed block |
 | `adapters/claude/hooks/` | Claude Code hooks around the gate runner: SessionStart (open specs), Stop (`stop` gates: seconds, changed crates only), commit gate (`fast` gates before `git commit`), PreToolUse guard (no new suppressions) |
 | `sync.mjs` | Installer, updater and drift check; vendored into each repository as `.agents/sync.mjs` |
@@ -65,6 +66,25 @@ Edit it here, keep it project-neutral (project facts belong in the profile), run
 - `$ARGUMENTS` / `$0` and `` !`command` `` context lines are Claude Code features. Every skill says in its **Agent notes** what they mean, so another agent fills them in itself.
 - Name tools by what they do and give the Claude Code name in brackets ("ask the user (AskUserQuestion)", "a subagent without chat history (the Agent tool)"), with a fallback for agents without them.
 - Scripts are plain Node without dependencies and are called by their path under `.agents/skills/` — that path exists for every agent.
+
+## Skills from crumora
+
+Ten skills from [olcayseygan/crumora](https://github.com/olcayseygan/crumora) (MIT, © Olcay Seygan), copied at the commit named in each `metadata: source:` and adapted to work outside its Claude Code plugin:
+
+| Skill | What it does | Notes |
+| ----- | ------------ | ----- |
+| `compose` | Rebuilds a screen's layout in scored rounds; a blind judge picks the winner | needs `_shared` (the tournament rules), a browser |
+| `humanize` | Rebuilds an interface's interaction flow in scored rounds, judged on walked tasks | needs `_shared`, a browser |
+| `evolve` | Improves code, a UI or a document in scored generations | needs `_shared`, `compose`, `humanize` |
+| `gauge` | Measures a rendered UI (type, colour, contrast, alignment, viewports) and fixes misses | overlaps `ui-polish` |
+| `muster` | Checks a UI against 73 UX patterns and fixes violations | |
+| `lint` | Checks code against a fixed rule set (lite / full / ultra) and fixes it in place | rules may clash with a project's own conventions — the project's AGENTS.md wins |
+| `readback` | Restates a request as consequences before any work starts | |
+| `data-report` | Runs a data / measurement study and writes a single-file HTML report | `scripts/chart.py` needs Python + matplotlib |
+| `conduct` | Writes an orchestration block into `CLAUDE.md` (subagents, model routing) | Claude Code only |
+| `know-me` | Turns what repeats in a project into skills, commands, hooks, rules | Claude Code centred; writes skills to `.agents/skills` where this sync is used |
+
+Adaptations: references to `CLAUDE.md` also accept `AGENTS.md`, paths include `.agents/skills/`, the plugin's lint SessionStart hook is not included, and `conduct` / `know-me` say how they behave in a repository that uses this sync. They are not in any repository's `skills.json` yet: every installed skill costs context in each session (these descriptions are long), so a repository adds the ones it uses, e.g. `"skills": [..., "gauge", "muster"]`.
 
 ## Consumers
 
