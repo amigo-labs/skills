@@ -16,4 +16,5 @@ What the shared spec skills (`spec`, `spec-build`, `spec-check`, `spec-extract`,
 - **Stopping points** — what needs the user instead of a decision by the agent (new dependency, `unsafe`, disabled test, public API, …).
 - **Sizing** — how big one session's work may be (e.g. "about one M task, ~400 changed lines").
 - **Commits** — Conventional Commits scopes, what never shares a commit, one example with AC IDs.
+- **Language** — optional: the language of specs, commit messages and code comments; default English.
 - **Branches** — protected branch and the feature-branch name (default: `main` protected, `feat/<spec-name>`).

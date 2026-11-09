@@ -172,7 +172,7 @@ design: [{design spec §x.y}, …]
 - Respect the profile's **Conventions** in what an AC may demand (e.g. a forbidden pattern can never be required).
 - At least **3 edge cases**, every out-of-scope item with "— because".
 - **Spec = WHAT**, not HOW — no file names or task lists in the ACs.
-- Spec language is **English**; talk to the user in their language.
+- Spec language is **English** unless the profile's **Language** says otherwise; talk to the user in their language.
 
 ## Context
 

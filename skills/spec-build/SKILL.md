@@ -112,7 +112,7 @@ It derives everything from the repository. An agent without subagents asks the u
 - Never `git add -A`, never commit unrelated files, never `--no-verify`.
 - Don't lower gates, don't delete, skip, ignore or weaken tests.
 - The spec is the brief, not up for negotiation: don't reword ACs to make them fit. If an AC is wrong, record it under `## Open questions`.
-- Spec, commit messages and code comments are **English**; the report is in the user's language.
+- Spec, commit messages and code comments are **English** unless the profile's **Language** says otherwise; the report is in the user's language.
 
 ## Context
 

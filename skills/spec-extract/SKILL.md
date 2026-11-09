@@ -126,7 +126,7 @@ In both modes no `git push` — pushing and merging is the user's job.
 - **No spec changes** except `## Current state` in analyze mode
 - **Don't change the front-matter status** of an existing spec — only `spec-check` sets `implemented`
 - **Take types and code verbatim** — don't paraphrase
-- Specs are **English**; talk to the user in their language
+- Specs are **English** unless the profile's **Language** says otherwise; talk to the user in their language
 
 ## Context
 

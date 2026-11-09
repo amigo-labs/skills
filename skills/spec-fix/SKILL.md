@@ -43,7 +43,7 @@ Show the user: a short diff summary, the red and the green run, spec changes if 
 - **Always a regression test**, red before the fix — a fix without one is incomplete.
 - **Minimal** — don't refactor, don't improve, don't clean up.
 - No new feature spec; keep existing ones true.
-- Commit messages and code comments in English; talk to the user in their language.
+- Commit messages and code comments in English unless the profile's **Language** says otherwise; talk to the user in their language.
 
 ## Context
 
