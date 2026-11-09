@@ -9,7 +9,6 @@ The shared agent skills of amigo-labs, plus the small amount of tooling that put
 | `skills/spec`, `spec-build`, `spec-check`, `spec-extract`, `spec-fix` | The spec-driven workflow: feature spec with acceptance criteria → test-first build → independent acceptance; bug fixes with a red regression test |
 | `skills/qa` | Full gate run; its `scripts/` hold the agent-neutral gate runner (`gates.mjs`), `commit-mode.mjs` and `open-specs.mjs` |
 | `skills/ui-polish` | Screenshot-scored UI improvement loop |
-| `skills/develop` | The older verified-development workflow (specs/ADRs); kept for reference, not installed by default |
 | `skills/compose`, `humanize`, `evolve`, `gauge`, `muster`, `lint`, `readback`, `data-report`, `conduct`, `know-me` (+ `_shared`) | Adapted from [olcayseygan/crumora](https://github.com/olcayseygan/crumora) (MIT, `LICENSE.txt` in each folder, source commit in the front matter). Available, not installed by default — see "Skills from crumora" |
 | `agents-md/spec-workflow.md` | The workflow rules (triage, keeping knowledge, quality gates), inserted into each repository's `AGENTS.md` as a managed block |
 | `adapters/claude/hooks/` | Claude Code hooks around the gate runner: SessionStart (open specs), Stop (`stop` gates: seconds, changed crates only), commit gate (`fast` gates before `git commit`), PreToolUse guard (no new suppressions) |
