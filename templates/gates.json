@@ -1,0 +1,15 @@
+{
+  "$comment": "Quality gates for the qa, spec-build and spec-check skills (node .agents/skills/qa/scripts/gates.mjs fast|full) and the Claude Code hooks. `full` mirrors CI; `fast` runs in the Stop hook, filtered by `paths` (prefixes of changed repository paths). `needs` lists the ids a gate waits for; gates without needs between them run in parallel. Optional per gate: `fix` (auto-fix command), `note` (guidance when it is red).",
+  "fast": [
+    { "id": "fmt", "name": "format", "cwd": ".", "command": "cargo fmt --all -- --check", "fix": "cargo fmt --all", "paths": ["crates/", "Cargo.toml"], "needs": [] },
+    { "id": "clippy", "name": "clippy", "cwd": ".", "command": "cargo clippy --workspace --all-targets -- -D warnings", "paths": ["crates/", "Cargo.toml", "Cargo.lock"], "needs": [] }
+  ],
+  "full": [
+    { "id": "fmt", "name": "format", "cwd": ".", "command": "cargo fmt --all -- --check", "fix": "cargo fmt --all", "needs": [] },
+    { "id": "clippy", "name": "clippy", "cwd": ".", "command": "cargo clippy --workspace --all-targets -- -D warnings", "needs": [] },
+    { "id": "test", "name": "cargo test", "cwd": ".", "command": "cargo test --workspace", "needs": ["clippy"] },
+    { "id": "skills", "name": "agent skills in sync", "cwd": ".", "command": "node .agents/sync.mjs --check", "note": "Vendored skills are edited in amigo-labs/skills and synced with `node .agents/sync.mjs`; a repository's own skills are edited in .agents/skills, then `node .agents/sync.mjs --mirror`.", "needs": [] }
+  ],
+  "suppressionExtensions": [".rs"],
+  "suppressions": ["#[allow(", "#![allow(", "#[expect(", "#![expect(", "#[ignore"]
+}
