@@ -1,5 +1,9 @@
 {
-  "$comment": "Quality gates for the qa, spec-build and spec-check skills (node .agents/skills/qa/scripts/gates.mjs fast|full) and the Claude Code hooks. `full` mirrors CI; `fast` runs in the Stop hook, filtered by `paths` (prefixes of changed repository paths). `needs` lists the ids a gate waits for; gates without needs between them run in parallel. Optional per gate: `fix` (auto-fix command), `note` (guidance when it is red).",
+  "$comment": "Quality gates for the qa, spec-build and spec-check skills (node .agents/skills/qa/scripts/gates.mjs fast|full) and the Claude Code hooks. `stop` runs after every Claude turn that changed code and must take seconds: `{cargo-packages}` becomes `-p <crate>` for each changed crate (minus `excludePackages`), and a gate without changed crates is skipped. `fast` runs before every commit (commit gate) and in spec-build after each block. `full` mirrors CI. The hooks filter `stop` and `fast` by `paths` (prefixes of changed repository paths). `needs` lists the ids a gate waits for; gates without needs between them run in parallel. Optional per gate: `fix` (auto-fix command), `note` (guidance when it is red).",
+  "stop": [
+    { "id": "fmt", "name": "format", "cwd": ".", "command": "cargo fmt --all -- --check", "fix": "cargo fmt --all", "paths": ["crates/"], "needs": [] },
+    { "id": "clippy", "name": "clippy (changed crates)", "cwd": ".", "command": "cargo clippy {cargo-packages} --all-targets -- -D warnings", "paths": ["crates/"], "excludePackages": [], "needs": [] }
+  ],
   "fast": [
     { "id": "fmt", "name": "format", "cwd": ".", "command": "cargo fmt --all -- --check", "fix": "cargo fmt --all", "paths": ["crates/", "Cargo.toml"], "needs": [] },
     { "id": "clippy", "name": "clippy", "cwd": ".", "command": "cargo clippy --workspace --all-targets -- -D warnings", "paths": ["crates/", "Cargo.toml", "Cargo.lock"], "needs": [] }

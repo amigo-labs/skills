@@ -11,7 +11,7 @@ The shared agent skills of amigo-labs, plus the small amount of tooling that put
 | `skills/ui-polish` | Screenshot-scored UI improvement loop |
 | `skills/develop` | The older verified-development workflow (specs/ADRs); kept for reference, not installed by default |
 | `agents-md/spec-workflow.md` | The workflow rules (triage, keeping knowledge, quality gates), inserted into each repository's `AGENTS.md` as a managed block |
-| `adapters/claude/hooks/` | Claude Code hooks around the gate runner: SessionStart (open specs), Stop (fast gates), PreToolUse guard (no new suppressions) |
+| `adapters/claude/hooks/` | Claude Code hooks around the gate runner: SessionStart (open specs), Stop (`stop` gates: seconds, changed crates only), commit gate (`fast` gates before `git commit`), PreToolUse guard (no new suppressions) |
 | `sync.mjs` | Installer, updater and drift check; vendored into each repository as `.agents/sync.mjs` |
 | `templates/` | Starting points for a new repository: `skills.json`, `gates.json`, the profile section, Claude Code `settings.json` |
 
