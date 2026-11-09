@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+ body{font-family:'Segoe UI',Arial,sans-serif;line-height:1.65;color:#1a1a1a;
+      max-width:900px;margin:0 auto;padding:40px 28px;background:#fff;}
+ h1{font-size:26px;color:#0d3b66;margin-bottom:4px;}
+ h2{font-size:20px;color:#0d3b66;border-bottom:2px solid #e0e6ed;padding-bottom:6px;margin-top:38px;}
+ h3{font-size:16px;color:#2a5a84;margin-top:24px;}
+ .meta{color:#666;font-size:14px;margin-bottom:24px;}
+ .lead{background:#f0f6ff;border-left:5px solid #2a7fff;padding:16px 20px;border-radius:6px;margin:20px 0;}
+ .reco{background:#eafaf0;border-left:5px solid #22aa55;padding:16px 20px;border-radius:6px;margin:20px 0;}
+ .warn{background:#fff6e8;border-left:5px solid #ff9500;padding:14px 20px;border-radius:6px;margin:20px 0;font-size:14px;}
+ table{border-collapse:collapse;width:100%;margin:18px 0;font-size:14px;}
+ th,td{border:1px solid #d5dbe2;padding:9px 12px;text-align:center;}
+ th{background:#0d3b66;color:#fff;font-weight:600;}
+ tr:nth-child(even){background:#f6f8fa;}
+ td.left,th.left{text-align:left;}
+ .win{background:#eafaf0;font-weight:700;color:#178048;}
+ .kpi{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0;}
+ .kpi>div{flex:1 1 150px;background:#f6f8fa;border:1px solid #e0e6ed;border-radius:6px;padding:12px 14px;}
+ .kpi .v{font-size:22px;font-weight:700;color:#0d3b66;display:block;}
+ .kpi .l{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.3px;}
+ img{max-width:100%;border:1px solid #e0e6ed;border-radius:6px;margin:14px 0;}
+ .cap{font-size:13px;color:#666;font-style:italic;margin-top:-6px;margin-bottom:20px;}
+ .big{font-size:17px;font-weight:600;}
+ code{background:#f0f2f5;padding:1px 6px;border-radius:4px;font-size:13px;}
+ footer{margin-top:44px;padding-top:16px;border-top:1px solid #e0e6ed;color:#888;font-size:12px;}
+ @media print{
+   body{padding:0;max-width:none;}
+   h2{page-break-after:avoid;}
+   img,table,.lead,.reco,.warn,.kpi{page-break-inside:avoid;}
+ }
+</style></head><body>
+
+<!--
+ THREE LAYERS, THREE READERS. Each layer reads on its own; nothing is repeated between them.
+   1. anyone            — the answer, in practice, no jargon, no method
+   2. knows the field   — the question in context, the numbers, the conclusion
+   3. engineers         — how it was measured, limits, data detail; reproducible from here alone
+
+ EVERY heading below is a placeholder. Name each one after what is in it — the subject, the
+ number, the decision. Never a heading from the banned list in SKILL.md.
+ Headings and every fixed label (meta line, table headers, footer) are written in the report
+ language; {{LANG}} is its code.
+-->
+
+<h1>{{TITLE}}</h1>
+<div class="meta">
+ <b>{{LABEL_PROJECT}}:</b> {{PROJECT}} &nbsp;|&nbsp;
+ <b>{{LABEL_SUBJECT}}:</b> {{SUBJECT}}<br>
+ <b>{{LABEL_DATE}}:</b> {{DATE_LONG}} &nbsp;|&nbsp;
+ <b>{{LABEL_DATA_SOURCE}}:</b> {{DATA_SOURCE}}
+</div>
+
+<!-- ============ LAYER 1 — anyone ============ -->
+
+<div class="lead">
+<span class="big">{{LEAD_HEADING: the answer in a few words, e.g. "B setting halves the drop rate".}}</span><br>
+{{LEAD: what was asked, what came out, what it means in practice. 3-5 sentences, no jargon,
+ no method, no unit a reader has to decode.}}
+</div>
+
+<!-- Mandatory for a decision study; delete it for a descriptive one -->
+<div class="reco">
+<b>{{RECO_LABEL: "Recommendation" written in the report language}}:</b> {{RECO: which option, under which condition, resting on which number.}}
+</div>
+
+<!-- Optional, at most one: a single at-a-glance shape. No axis that needs explaining. Delete if none. -->
+{{IMG_TAG_GLANCE}}
+<div class="cap">{{One sentence: what this picture says.}}</div>
+
+<!-- ============ LAYER 2 — knows the field, not this study ============ -->
+
+<h2>1. {{Heading naming the question that was asked}}</h2>
+<p>{{OBJECTIVE: which question was being answered, why it matters, what decision hangs on it.}}</p>
+
+<h2>2. {{Heading naming what the numbers show}}</h2>
+
+<div class="kpi">
+ <div><span class="v">{{VALUE}}</span><span class="l">{{LABEL}}</span></div>
+ <div><span class="v">{{VALUE}}</span><span class="l">{{LABEL}}</span></div>
+ <div><span class="v">{{VALUE}}</span><span class="l">{{LABEL}}</span></div>
+</div>
+
+<p>{{Introduce the chart in one sentence: what to look at, what "high" means here.}}</p>
+{{IMG_TAG_1}}
+<div class="cap">{{Figure 1: what it shows + one sentence of interpretation.}}</div>
+
+<table>
+ <tr><th class="left">{{Record/Condition}}</th><th>{{Metric}}</th><th>{{Samples}}</th><th>{{Note}}</th></tr>
+ <tr><td class="left">{{...}}</td><td>{{...}}</td><td>{{...}}</td><td>{{...}}</td></tr>
+</table>
+
+<h2>3. {{Heading naming the verdict}}</h2>
+<p>{{CONCLUSION: the findings summarised and how certain they are. What was proven, what was not.}}</p>
+
+<!-- ============ LAYER 3 — engineers ============ -->
+
+<h2>4. {{Heading naming how it was measured}}</h2>
+<p>{{METHOD: what was measured, how, and why that measurement is sound. State what was normalised here.}}</p>
+<p>{{RANGE: which range or condition it was measured over, and why that range.}}</p>
+<!-- Optional: mechanism / diagnostic charts — raw traces, residuals, the normalised confound. -->
+{{IMG_TAG_DIAG}}
+<div class="cap">{{Figure N: what it shows + one sentence of interpretation.}}</div>
+
+<h2>5. {{Heading naming what this study cannot tell you}}</h2>
+<div class="warn">
+<ul>
+ <li>{{Assumption.}}</li>
+ <li>{{Limit / something not measured.}}</li>
+ <li>{{Confound and how it was handled.}}</li>
+</ul>
+</div>
+
+<h2>6. {{Heading naming the underlying data}}</h2>
+<table>
+ <tr><th class="left">{{Record}}</th><th>{{Date}}</th><th>{{Duration}}</th><th>{{Samples}}</th><th class="left">{{Condition}}</th></tr>
+ <tr><td class="left">{{...}}</td><td>{{...}}</td><td>{{...}}</td><td>{{...}}</td><td class="left">{{...}}</td></tr>
+</table>
+
+<footer>
+ {{LABEL_ANALYSIS_DIR}}: <code>{{ANALYSIS_DIR}}</code><br>
+ {{PROJECT}} &mdash; {{DATE_LONG}}
+</footer>
+
+</body></html>
