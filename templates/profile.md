@@ -3,6 +3,7 @@
 What the shared spec skills (`spec`, `spec-build`, `spec-check`, `spec-extract`, `spec-fix`, `qa`) need to know about this repository. Keep the bold keys; the skills look them up by name. Point to other sections of this file instead of repeating them.
 
 - **Design spec** — `docs/specs/<project>.md` (`status: draft`, no acceptance criteria): architecture, data model. Other design documents: …
+- **Spec index** — optional: the file that lists the feature specs (order, backlog, done); default `docs/specs/README.md`.
 - **Decisions** — where an architectural decision goes, e.g. "Decision Log in `docs/specs/<project>.md` §N" or "an ADR `docs/adrs/NNNN-<slug>.md`".
 - **Code map** — where `spec` and `spec-extract` look for the feature area: crates / packages / folders and what each holds.
 - **Spec questions** — what `spec` asks besides what, why and edge cases (e.g. which platform, which mode, which UI entry point), and the extra front-matter fields that record it (e.g. `platforms: {all | Windows | …}`).

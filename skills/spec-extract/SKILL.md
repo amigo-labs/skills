@@ -111,7 +111,7 @@ Update or add the `## Current state` section in the spec:
 Whether you commit the written files without asking is decided by the **commit mode** in Context (`SPEC_AUTOCOMMIT`, per developer):
 
 - **on** (default — also when the Context line is missing or says anything other than `ask`): `spec-build` only starts on a clean working tree and reads the committed spec — so commit yourself:
-  1. Add a new spec to `docs/specs/README.md`, then stage only the affected files, by path: `git add docs/specs/<name>.md docs/specs/README.md` — never `git add -A`, no other files.
+  1. Add a new spec to the spec index (**Spec index**, default `docs/specs/README.md`), then stage only the affected files, by path: `git add docs/specs/<name>.md <spec index>` — never `git add -A`, no other files.
   2. Commit `docs(spec): extract <name>` or `docs(spec): analyze <name>`.
   3. On the protected branch (**Branches**, default `main`) first switch to `feat/<name>`, where `spec-build` continues.
 - **ask**: ask the user before the commit — do not end the turn without this question. The question names the files and the commit message; the options are "Commit now" and "Continue without commit":

@@ -30,7 +30,7 @@ Both in parallel:
 
 **Research** (subagents for broad searches where the agent has them):
 
-- Find the sections of the **Design spec** the feature builds on, and the entry in `docs/specs/README.md` (order, backlog) if any
+- Find the sections of the **Design spec** the feature builds on, and its entry in the spec index (**Spec index**, default `docs/specs/README.md`: order, backlog) if any
 - Find existing code in the feature area, guided by the **Code map**
 - Identify reusable types, commands, components and test helpers
 - Check for conflicts with other feature specs and with the **Decisions**
@@ -51,7 +51,7 @@ If the user says at the first question that they want no spec ("just do it"), st
 
 ## Step 3: Write
 
-Write the spec to `docs/specs/$0.md` (template below). Size it per **Sizing**: a feature too big for a few sessions is split into several specs before writing. Add it to `docs/specs/README.md` (order table, or remove its backlog row); create that index if the repository has none yet.
+Write the spec to `docs/specs/$0.md` (template below). Size it per **Sizing**: a feature too big for a few sessions is split into several specs before writing. Add it to the spec index (order table, or remove its backlog row); create `docs/specs/README.md` if the repository has no index yet.
 
 ## Step 4: Clarification pass
 
@@ -73,7 +73,7 @@ Turn the findings into questions for the user, adjust the spec, repeat the pass 
 Whether you commit the spec without asking is decided by the **commit mode** in Context (`SPEC_AUTOCOMMIT`, per developer):
 
 - **on** (default — also when the Context line is missing or says anything other than `ask`): `spec-build` only starts on a clean working tree and reads the committed spec — an unsaved spec would make it abort at once. So commit the spec yourself, and only it:
-  1. `git add docs/specs/$0.md docs/specs/README.md` (plus the file of a decision from step 2) — never `git add -A`, no other files.
+  1. `git add docs/specs/$0.md <spec index>` (plus the file of a decision from step 2) — never `git add -A`, no other files.
   2. Commit `docs(spec): add $0` (new) or `docs(spec): revise $0` (revision mode).
 - **ask**: ask the user before the commit — do not end the turn without this question. The question names the files and the commit message; the options are "Commit now" and "Continue without commit":
   - "Commit now": commit as with **on**.

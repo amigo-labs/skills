@@ -91,7 +91,7 @@ In the user's language:
 ```
 
 5. Remove `## Current state` (if present). `## Decisions` stays — that is long-term project knowledge.
-6. In `docs/specs/README.md`, move the spec to "Done" if the index has such a list.
+6. In the spec index (**Spec index**, default `docs/specs/README.md`), move the spec to "Done" if the index has such a list.
 
 On any other verdict, no change to the spec file — only the report. You don't commit; `spec-build` or the user does.
 

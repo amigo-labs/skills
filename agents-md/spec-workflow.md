@@ -22,7 +22,7 @@ Two kinds of spec live in `docs/specs/`:
 | Design spec (named in the profile) | `status: draft`, no acceptance criteria | Architecture, data model, the decisions |
 | Feature spec `docs/specs/<name>.md` | `status: todo` / `implemented`, `## Acceptance criteria` | One feature: what it does, how we prove it |
 
-A feature spec references the design-spec sections it builds on and never contradicts them. A feature that needs an architectural decision (cross-crate or cross-package boundary, file format, new dependency, public API shape) gets a decision where the profile says, in the same commit as the spec. `docs/specs/README.md` indexes the feature specs: order, dependencies, done, and the backlog of gaps not yet written as specs.
+A feature spec references the design-spec sections it builds on and never contradicts them. A feature that needs an architectural decision (cross-crate or cross-package boundary, file format, new dependency, public API shape) gets a decision where the profile says, in the same commit as the spec. The spec index (profile **Spec index**, default `docs/specs/README.md`) lists the feature specs: order, dependencies, done, and the backlog of gaps not yet written as specs.
 
 ### Triage
 
