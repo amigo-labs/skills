@@ -9,6 +9,7 @@ The shared agent skills of amigo-labs, plus the small amount of tooling that put
 | `skills/spec`, `spec-build`, `spec-check`, `spec-extract`, `spec-fix` | The spec-driven workflow: feature spec with acceptance criteria → test-first build → independent acceptance; bug fixes with a red regression test |
 | `skills/qa` | Full gate run; its `scripts/` hold the agent-neutral gate runner (`gates.mjs`), `commit-mode.mjs` and `open-specs.mjs` |
 | `skills/ui-polish` | Screenshot-scored UI improvement loop |
+| `skills/improve` | Measure → change once → compare once: a scripted defect list, one builder, one blind old/new comparison in both orders; `scripts/` hold the width sweep (`sweep.mjs`) and the blind-pool builder (`blind.mjs`) |
 | `skills/compose`, `humanize`, `evolve`, `gauge`, `muster`, `lint`, `readback`, `data-report`, `conduct`, `know-me` (+ `_shared`) | Adapted from [olcayseygan/crumora](https://github.com/olcayseygan/crumora) (MIT, `LICENSE.txt` in each folder, source commit in the front matter). Available, not installed by default — see "Skills from crumora" |
 | `agents-md/spec-workflow.md` | The workflow rules (triage, keeping knowledge, quality gates), inserted into each repository's `AGENTS.md` as a managed block |
 | `adapters/claude/hooks/` | Claude Code hooks around the gate runner: SessionStart (open specs), Stop (`stop` gates: seconds, changed crates only), commit gate (`fast` gates before `git commit`), PreToolUse guard (no new suppressions) |
@@ -83,13 +84,15 @@ Ten skills from [olcayseygan/crumora](https://github.com/olcayseygan/crumora) (M
 | `conduct` | Writes an orchestration block into `CLAUDE.md` (subagents, model routing) | Claude Code only |
 | `know-me` | Turns what repeats in a project into skills, commands, hooks, rules | Claude Code centred; writes skills to `.agents/skills` where this sync is used |
 
+`improve` (not from crumora) is the cheap alternative to `compose`, `humanize` and `evolve`. It takes about two agents per run instead of dozens; a tournament's later rounds mostly sort near-equal versions inside the judge's noise. Use a tournament when you want several directions explored, `improve` for a measured fix of one target.
+
 Adaptations: references to `CLAUDE.md` also accept `AGENTS.md`, paths include `.agents/skills/`, the plugin's lint SessionStart hook is not included, and `conduct` / `know-me` say how they behave in a repository that uses this sync. They are not in any repository's `skills.json` yet: every installed skill costs context in each session (these descriptions are long), so a repository adds the ones it uses, e.g. `"skills": [..., "gauge", "muster"]`.
 
 ## Consumers
 
 | Repository | Shared skills | Own skills |
 | ---------- | ------------- | ---------- |
-| amigo-pincel | spec workflow, qa, ui-polish | — |
+| amigo-pincel | spec workflow, qa, ui-polish, improve | — |
 | amigo-blinzel | spec workflow, qa | — |
 | amigo-krake | spec workflow, qa | — |
 | amigo-engine | spec workflow, qa | — |

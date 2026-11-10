@@ -17,4 +17,5 @@ What the shared spec skills (`spec`, `spec-build`, `spec-check`, `spec-extract`,
 - **Sizing** — how big one session's work may be (e.g. "about one M task, ~400 changed lines").
 - **Commits** — Conventional Commits scopes, what never shares a commit, one example with AC IDs.
 - **Language** — optional: the language of specs, commit messages and code comments; default English.
+- **Improve** — optional, for the `improve` skill: how to serve the UI for a width sweep (build + preview command and URL), where stress-state setup files live, the project's own checks to run first (a token or style lint, translation-key parity, …), and constraints a builder must keep beyond **Conventions**.
 - **Branches** — protected branch and the feature-branch name (default: `main` protected, `feat/<spec-name>`).
