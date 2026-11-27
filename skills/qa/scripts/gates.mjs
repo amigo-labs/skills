@@ -17,7 +17,7 @@ import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { errorLines, GATES_FILES, loadGates, recordGreen, repoRootFromScript, runGates, treeState } from './lib.mjs';
+import { errorLines, gateTimeoutMs, GATES_FILES, invalidTimeouts, loadGates, recordGreen, repoRootFromScript, runGates, treeState } from './lib.mjs';
 
 const LISTS = ['fast', 'full'];
 const GATE_TIMEOUT_MS = 30 * 60 * 1000;
@@ -37,7 +37,7 @@ function verdict(result) {
     case 'failed':
       return 'red';
     case 'timeout':
-      return `time limit (${GATE_TIMEOUT_MS / 60000} min)`;
+      return `time limit (${gateTimeoutMs(result.gate, GATE_TIMEOUT_MS) / 60000} min)`;
     default:
       return result.blockedBy ? `skipped (${result.blockedBy} not green)` : 'skipped (unknown dependency)';
   }
@@ -79,10 +79,17 @@ if (!Array.isArray(gates)) {
   process.exit(2);
 }
 
+const badTimeouts = invalidTimeouts(gates);
+if (badTimeouts.length > 0) {
+  console.error(`timeoutMinutes must be a number above 0 (gate${badTimeouts.length > 1 ? 's' : ''}: ${badTimeouts.join(', ')}).`);
+  process.exit(2);
+}
+
 removeOldLogs();
 const treeBefore = treeState(dir);
 const results = await runGates(dir, gates, {
   timeoutMs: GATE_TIMEOUT_MS,
+  perGateTimeouts: true,
   onSettled: result => console.error(`${verdict(result)}: ${result.gate.name} (${seconds(result.durationMs)})`),
 });
 const logs = results.map((result, index) => (result.status === 'skipped' ? null : writeLog(result, index)));

@@ -9,7 +9,7 @@ The commands are not here but in `.agents/gates.json` (list `full`; `stop` and `
 
 ## Procedure
 
-1. From the repo root run `node .agents/skills/qa/scripts/gates.mjs full`. Cold builds and e2e tests make it slow: give it a long timeout (10 minutes and more), or run it in the background and wait for it to finish. The script runs every entry of `full`, independent stages at the same time (`needs` in `gates.json`), and prints a table, plus for every red stage its error lines, the `fix` command, a `note` if the gate has one, and the path to the full log.
+1. From the repo root run `node .agents/skills/qa/scripts/gates.mjs full`. Cold builds and e2e tests make it slow: give it a long timeout (10 minutes and more), or run it in the background and wait for it to finish. The script runs every entry of `full`, independent stages at the same time (`needs` in `gates.json`), and prints a table, plus for every red stage its error lines, the `fix` command, a `note` if the gate has one, and the path to the full log. A gate runs at most 30 minutes, or the `timeoutMinutes` its entry in `gates.json` sets (the hooks keep their own shorter budget); one that runs out is reported as `time limit (… min)`, which is red.
 2. Exit 2 means: the gate configuration is missing or broken. Report it and stop.
 3. Fix **all red stages** in the code, then start the run **from scratch** — a fix can break another stage. A skipped stage is not green: it waits for a red one and only runs in the next pass. If the error lines aren't enough, read the log.
 4. Where a stage has a `fix` command, it may fix what is auto-fixable (formatting, lint autofix). Start over afterwards anyway.
