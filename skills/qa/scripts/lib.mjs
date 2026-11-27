@@ -41,6 +41,21 @@ export function loadGates(dir) {
   return null;
 }
 
+/**
+ * The time limit of `gate` in ms: its `timeoutMinutes` when it sets one,
+ * else `fallbackMs`.
+ */
+export function gateTimeoutMs(gate, fallbackMs) {
+  return gate.timeoutMinutes === undefined ? fallbackMs : gate.timeoutMinutes * 60000;
+}
+
+/** The names of the gates whose `timeoutMinutes` is set but no finite number above 0. */
+export function invalidTimeouts(gates) {
+  return gates
+    .filter(gate => gate.timeoutMinutes !== undefined && !(typeof gate.timeoutMinutes === 'number' && Number.isFinite(gate.timeoutMinutes) && gate.timeoutMinutes > 0))
+    .map(gate => gate.name ?? gate.id);
+}
+
 const MAX_GATE_OUTPUT = 32 * 1024 * 1024;
 // "nicht gefunden": cmd.exe reports a missing command in the system language
 const ERROR_LINE = /error|×|✖|failed|FAIL|panicked|not found|not recognized|nicht gefunden/i;
@@ -108,8 +123,11 @@ function dependencies(gates) {
  * not green (or can never be met) is skipped. Results come back in list
  * order, each `{ gate, status, output, durationMs, blockedBy? }` with status
  * ok | failed | timeout | skipped; `onSettled` sees each one as it finishes.
+ * Every gate runs at most `timeoutMs`; with `perGateTimeouts` a gate's own
+ * `timeoutMinutes` replaces that limit. The hooks leave it off: their budget
+ * is theirs, whatever a gate of the full list may take.
  */
-export function runGates(dir, gates, { timeoutMs, onSettled = () => {} }) {
+export function runGates(dir, gates, { timeoutMs, perGateTimeouts = false, onSettled = () => {} }) {
   const needs = dependencies(gates);
   const results = gates.map(() => undefined);
   let running = 0;
@@ -133,7 +151,7 @@ export function runGates(dir, gates, { timeoutMs, onSettled = () => {} }) {
           } else if (needs[index].every(need => results[need]?.status === 'ok')) {
             results[index] = { gate, status: 'running' };
             running++;
-            runGate(dir, gate, timeoutMs).then(result => {
+            runGate(dir, gate, perGateTimeouts ? gateTimeoutMs(gate, timeoutMs) : timeoutMs).then(result => {
               running--;
               finish(index, result);
               schedule();
